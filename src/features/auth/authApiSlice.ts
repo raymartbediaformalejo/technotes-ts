@@ -11,24 +11,25 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: { ...credentials },
       }),
     }),
-    sendLogout: builder.mutation<TAuthToken, void>({
+    sendLogout: builder.mutation({
       query: () => ({
         url: "/auth/logout",
         method: "POST",
       }),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
-          //const { data } =
-          await queryFulfilled;
-          //console.log(data)
+          const { data } = await queryFulfilled;
+          console.log("data: ", data);
           dispatch(logOut());
-          dispatch(apiSlice.util.resetApiState());
+          setTimeout(() => {
+            dispatch(apiSlice.util.resetApiState());
+          }, 1000);
         } catch (err) {
           console.log(err);
         }
       },
     }),
-    refresh: builder.mutation<void, void>({
+    refresh: builder.mutation({
       query: () => ({
         url: "/auth/refresh",
         method: "GET",

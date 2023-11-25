@@ -10,7 +10,11 @@ const NotesList = () => {
     isSuccess,
     isError,
     error,
-  } = useGetNotesQuery();
+  } = useGetNotesQuery(undefined, {
+    pollingInterval: 15000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
   const allNote = useAppSelector(selectAllNotes);
   console.log("allNote: ", allNote);
 
@@ -22,7 +26,7 @@ const NotesList = () => {
     if ("status" in error) {
       const errMsg =
         "error" in error ? error.error : JSON.stringify(error.data);
-      content = <p className="errmsg">{errMsg}</p>;
+      content = <p className="errmsg">{`${JSON.parse(errMsg).message}`}</p>;
     } else {
       content = <p className="errmsg">{error.message}</p>;
     }

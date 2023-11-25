@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { setCredentials } from "./authSlice";
 import { useLoginMutation } from "./authApiSlice";
 
@@ -13,7 +13,7 @@ const Login = () => {
   const [errMsg, setErrMsg] = useState("");
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [login, { isLoading }] = useLoginMutation();
 
@@ -29,6 +29,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const { accessToken } = await login({ username, password }).unwrap();
+      console.log("accessToken: ", accessToken);
       dispatch(setCredentials({ accessToken }));
       setUsername("");
       setPassword("");

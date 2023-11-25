@@ -8,7 +8,11 @@ const UsersList = () => {
     isSuccess,
     isError,
     error,
-  } = useGetUsersQuery();
+  } = useGetUsersQuery(undefined, {
+    pollingInterval: 60000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
 
   let content;
 
@@ -18,7 +22,7 @@ const UsersList = () => {
     if ("status" in error) {
       const errMsg =
         "error" in error ? error.error : JSON.stringify(error.data);
-      content = <p className="errmsg">{errMsg}</p>;
+      content = <p className="errmsg">{`${JSON.parse(errMsg).message}`}</p>;
     } else {
       content = <p className="errmsg">{error.message}</p>;
     }
